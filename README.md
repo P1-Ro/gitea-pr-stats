@@ -25,8 +25,6 @@ An API token is required for making calls to the Gitea API, so you will need to 
 
 All configuration is inside git_config.py. Create one for yourself from .sample file provided. It should look like this.
 
-	username = "USERNAME"
-	password = "PASSWORD"	
 	repositories = ["owner/repo", "owner/repo"]  # repositories to which you want to be able create reports
 	port = 8000  # port of report server
 	gitea_url = "https://try.gitea.io"  # url to your gitea instance
