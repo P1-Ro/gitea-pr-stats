@@ -31,6 +31,7 @@ All configuration is inside git_config.py. Create one for yourself from .sample 
 	port = 8000  # port of report server
 	gitea_url = "https://try.gitea.io"  # url to your gitea instance
   token = "abcdefabcdefabcdefabcdefabcdef" # API token you generated in the Gitea GUI
+ 
 
 Build client
 
