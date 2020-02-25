@@ -150,82 +150,90 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from 'vue-property-decorator';
-    import axios from 'axios';
-    import Urls from '@/util/URLs';
-    import ReportMetadata from '@/model/ReportMetadata';
-    import ReportContent from '@/model/ReportContent';
-    import UserStats from '@/model/UserStats';
+import { Component, Vue } from 'vue-property-decorator';
+import axios from 'axios';
+import Urls from '@/util/URLs';
+// eslint-disable-next-line no-unused-vars
+import ReportMetadata from '@/model/ReportMetadata';
+// eslint-disable-next-line no-unused-vars
+import ReportContent from '@/model/ReportContent';
+// eslint-disable-next-line no-unused-vars
+import UserStats from '@/model/UserStats';
 
-    @Component({})
-    export default class Report extends Vue {
-
+@Component({})
+export default class Report extends Vue {
         fromDate: Date = new Date('2019-09-01');
+
         toDate: Date = new Date();
+
         project: string = '';
+
         reports: Array<ReportMetadata> = [];
+
         isLoading: boolean = true;
+
         isGenerating: boolean = false;
+
         isShowingReport: boolean = false;
+
         report: Array<UserStats> = [];
+
         repos: Array<string> = [];
 
         mounted() {
-            this.loadRepos();
-            this.loadReports();
+          this.loadRepos();
+          this.loadReports();
         }
 
         generateReport() {
+          const data = {
+            from: this.fromDate,
+            to: this.toDate,
+            project: this.project,
+          };
 
-            const data = {
-                from: this.fromDate,
-                to: this.toDate,
-                project: this.project,
-            };
+          this.isGenerating = true;
 
-            this.isGenerating = true;
-
-            axios.post<ReportMetadata>(Urls.generate, data).then((response) => {
-                this.reports.push(response.data);
-            }).finally(() => {
-                this.isGenerating = false;
-            });
+          axios.post<ReportMetadata>(Urls.generate, data).then((response) => {
+            this.reports.push(response.data);
+          }).finally(() => {
+            this.isGenerating = false;
+          });
         }
 
         remove(id: string) {
-            axios.delete(`${Urls.report}/${id}`).then(() => {
-                this.reports = this.reports.filter((obj: ReportMetadata) => obj.id !== id);
-            });
+          axios.delete(`${Urls.report}/${id}`).then(() => {
+            this.reports = this.reports.filter((obj: ReportMetadata) => obj.id !== id);
+          });
         }
 
         loadAndOpen(id: string) {
-            axios.get<ReportContent>(`${Urls.report}/${id}`).then((response) => {
-                this.openReport(response.data);
-                this.isShowingReport = true;
-            }).catch(() => {
-                this.isShowingReport = false;
-            });
+          axios.get<ReportContent>(`${Urls.report}/${id}`).then((response) => {
+            this.openReport(response.data);
+            this.isShowingReport = true;
+          }).catch(() => {
+            this.isShowingReport = false;
+          });
         }
 
         private openReport(data: ReportContent) {
-            this.report = data.users;
+          this.report = data.users;
         }
 
         private loadRepos() {
-            axios.get<Array<string>>(Urls.repos).then((response) => {
-                this.repos = response.data;
-            }).finally(() => {
-                this.isLoading = false;
-            });
+          axios.get<Array<string>>(Urls.repos).then((response) => {
+            this.repos = response.data;
+          }).finally(() => {
+            this.isLoading = false;
+          });
         }
 
         private loadReports() {
-            axios.get<Array<ReportMetadata>>(`${Urls.report}/all`).then((response) => {
-                this.reports = response.data;
-            }).finally(() => {
-                this.isLoading = false;
-            });
+          axios.get<Array<ReportMetadata>>(`${Urls.report}/all`).then((response) => {
+            this.reports = response.data;
+          }).finally(() => {
+            this.isLoading = false;
+          });
         }
-
-    }
+}
 </script>

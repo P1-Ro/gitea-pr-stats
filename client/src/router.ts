@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from '@/views/Home.vue';
 import Login from '@/views/Login.vue';
 import NeedLogin from '@/views/NeedLogin.vue';
 import Report from '@/views/Report.vue';
@@ -15,7 +14,7 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      redirect: 'report'
+      redirect: 'report',
     },
     {
       path: '/report',
@@ -37,23 +36,5 @@ const router = new Router({
     },
   ],
 });
-
-/*
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    const loggedIn = sessionStorage.getItem('isLoggedIn');
-    if (loggedIn) {
-      next();
-    } else {
-      next({
-        path: '/need-login',
-        params: { nextUrl: to.fullPath },
-      });
-    }
-  } else {
-    next();
-  }
-});
-*/
 
 export default router;

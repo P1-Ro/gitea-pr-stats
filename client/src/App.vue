@@ -15,15 +15,6 @@
         </b-navbar-item>
       </template>
 
-<!--      <template slot="end">
-        <b-navbar-item tag="div">
-          <div class="buttons">
-            <router-link class="button is-primary" to="/login">
-              <strong>Log in</strong>
-            </router-link>
-          </div>
-        </b-navbar-item>
-      </template>-->
     </b-navbar>
     <router-view/>
   </div>
