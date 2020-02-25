@@ -6,14 +6,14 @@ import time
 import config
 from app.util import patch
 
-base = config.gite_url + "/api/v1"
+base = config.gitea_url + "/api/v1"
 
 
 class PrSt(object):
 
-    def __init__(self, username, password, repo_name, sprint_start=None, sprint_end=None):
+    def __init__(self, token, repo_name, sprint_start=None, sprint_end=None):
         self.gh = requests.Session()
-        self.gh.auth = (username, password)
+        self.token = token
         self.repo_name = repo_name
         self.sprint_start = sprint_start
         self.sprint_end = sprint_end
@@ -52,11 +52,11 @@ class PrSt(object):
                 break
 
     def load_prs(self):
-        return self.load_all("%s/repos/%s/pulls" % (base, self.repo_name))
+        return self.load_all("%s/repos/%s/pulls?token=%s" % (base, self.repo_name, self.token))
 
     def load_comments(self, pr_number):
-        return self.load_all("%s/repos/%s/issues/%d/comments" %
-                             (base, self.repo_name, pr_number))
+        return self.load_all("%s/repos/%s/issues/%d/comments?token=%s" %
+                             (base, self.repo_name, pr_number, self.token))
 
     def take_in_sprint(self, xs):
         for x in xs:
@@ -76,15 +76,15 @@ class PrSt(object):
     def compute(self):
         prs = self.take_in_sprint(self.load_prs())
         for pr in prs:
-            print(pr)
+            #print(pr)
             if self.in_sprint(pr["created_at"]):
                 self.user_stats[pr["user"]["login"]]["opened-prs"] += 1
                 self.opened_prs.append(pr["number"])
                 if pr["title"].lower().startswith("hot-fix"):
                     self.user_stats[pr["user"]["login"]]["hot-fix"] += 1
             if self.in_sprint(pr["created_at"]) or self.in_sprint(pr["merged_at"]):
-                res = self.gh.get("%s/repos/%s/pulls/%d" %
-                                  (base, self.repo_name, pr["number"]))
+                res = self.gh.get("%s/repos/%s/pulls/%d?token=%s" %
+                                  (base, self.repo_name, pr["number"], self.token))
                 pr = res.json()
                 self.pull_stats[pr["number"]]["opener"] = pr["user"]["login"]
             users = set()
@@ -96,7 +96,7 @@ class PrSt(object):
             for user in users:
                 self.user_stats[user]["commented-on-prs"] += 1
 
-            diff_url = pr["diff_url"]
+            diff_url = pr["diff_url"] + "token=" + self.token
             p = patch.fromstring(self.gh.get(diff_url).content)
             files, adds, deletes = p.diffstat()
 

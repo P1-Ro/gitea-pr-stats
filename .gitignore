@@ -4,6 +4,8 @@ dist
 db.json
 /config.py
 venv
+__pycache__/
+*.pyc
 
 # local env files
 .env.local
