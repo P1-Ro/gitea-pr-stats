@@ -30,13 +30,12 @@ All configuration is inside git_config.py. Create one for yourself from .sample 
 	repositories = ["owner/repo", "owner/repo"]  # repositories to which you want to be able create reports
 	port = 8000  # port of report server
 	gitea_url = "https://try.gitea.io"  # url to your gitea instance
-  token = "abcdefabcdefabcdefabcdefabcdef" # API token you generated in the Gitea GUI
- 
+	token = "abcdefabcdefabcdefabcdefabcdef" # API token you generated in the Gitea GUI
 
 Build client
 
 	cd client
-  npm install
+	npm install
 	npm run build
 
 And then server
