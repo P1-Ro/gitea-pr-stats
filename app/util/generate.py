@@ -4,8 +4,7 @@ import config
 
 
 def generate(repo_name, from_date=None, to_date=None):
-    stats = prst.PrSt(config.username, config.password,
-                      repo_name, from_date, to_date)
+    stats = prst.PrSt(config.token, repo_name, from_date, to_date)
 
     table = db.table("report")
 
