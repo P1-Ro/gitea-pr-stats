@@ -3,3 +3,4 @@ password = "PASSWORD"
 repositories = ["owner/repo", "owner/repo"]  # repositories to which you want to be able create reports
 port = 8000  # port of report server
 gitea_url = "https://try.gitea.io"  # url to your gitea instance
+token = "foobarbazfoobarbazfoobarbazfoobarbaz"
